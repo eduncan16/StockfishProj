@@ -18,6 +18,19 @@ class Cmd(subprocess.Popen):
     def cd(self, dir):
         self.send('cd /d ' + dir)
 
+    def ls(self):
+        self.send('ls')
+        line = self.stdout.readline().strip()
+        if not line == "":
+            return line
+        else:
+            raise Exception("empty line exception")
+
+    def readline(self):
+        line = self.stdout.readline().strip()
+        return line
+
+
     def pgnExtract(self, file):
         self.send('pgn-extract -Wuci ' + file)
         while True:

@@ -3,7 +3,7 @@ from cmdwrapper import Cmd
 import numpy as np
 
 class reader:
-    def readfile(self, file, outputfile, depth, name):
+    def readfile(self, file, depth, name):
         stockfish = Stockfish(
             path="E:\\python projects\\StockfishEngine\\stockfish-windows-x86-64-avx2.exe",
             depth=depth,
@@ -32,24 +32,15 @@ class reader:
         stockfish._prepare_for_new_position()
         stockfish.set_fen_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
-        ##points for data analysis
-        text_file = open(outputfile, "w")
-        maxAdv=-9
-        minAdv=9
-        avgAdv=0
-        totmov=len(moves)
-        advList = []
-
+        evalList = np.array([], dtype=np.float32)
 
         for i in moves:
             ##spacing and move count
             if mcounter%2==0:
                 print((mcounter//2),". ", end = "")
                 dum = str((mcounter//2))
-                text_file.write(dum + ". ")
             else:
                 print("    ", end="")
-                text_file.write("   ")
             mcounter+= 1
 
             ##stockfish wrapper is dumb, wont take moves unless formated in this way
@@ -59,19 +50,20 @@ class reader:
             stockdict = stockfish.get_evaluation()
             if(stockdict["type"]=="cp"):
                 adv = stockdict["value"]/100
+                if black:
+                    evalList = np.append(evalList, (adv*-1))
+                else:
+                    evalList = np.append(evalList, adv)
                 if adv>0:
                     print("+",adv)
-                    text_file.write("+ "+str(adv)+"\n")
                 else:
                     print(adv)
-                    text_file.write(str(adv)+"\n")
             else:
                 print("Mate in", stockdict["value"])
-                text_file.write("Mate in " + str(stockdict["value"]) + "\n")
+                #can replace nan with number later if applicable
+                evalList = np.append(evalList, np.nan)
 
             if mcounter%2==0:
                 print("\n")
-                text_file.write("\n")
 
-        text_file.close()
-        return
+        return evalList

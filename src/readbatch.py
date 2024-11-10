@@ -1,4 +1,4 @@
-from reader.reader import reader
+from reader import reader
 from cmdwrapper import Cmd
 cmd = Cmd()
 

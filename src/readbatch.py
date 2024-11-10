@@ -1,5 +1,7 @@
 from reader import reader
 from cmdwrapper import Cmd
+import numpy as np
+
 cmd = Cmd()
 
 
@@ -23,7 +25,8 @@ currline = ""
 counter = 1
 depth = 10
 end = False
-
+name = "Lifted_Truck_Swoas"
+evalList = np.array([], dtype=np.object)
 
 read = reader()
 while not end:
@@ -35,4 +38,4 @@ while not end:
     if currline=='end':
         end = True
     else:
-        read.readfile(currline, output, depth)
+        read.readfile(currline, depth, name)

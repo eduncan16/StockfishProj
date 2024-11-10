@@ -34,12 +34,30 @@ class Cmd(subprocess.Popen):
     def pgnExtract(self, file):
         self.send('pgn-extract -Wuci ' + file)
         while True:
-            line = self.stdout.readline().strip()
-            if not line == "":
+            line = self.stdout.readline()
+            if len(line) > 2:
                 if line[2] == 'n':
                     line = self.stdout.readline().strip()
                     line = self.stdout.readline().strip()
                     return line
+                
+    def getNames(self, file):
+        self.send('pgn-extract -Wuci ' + file)
+        ret = []
+        while True:
+            line = self.stdout.readline()
+            if len(line) > 2:
+                if line[1]=='W':
+                    ret.append(line)
+                if line[1]=='B':
+                    ret.append(line)
+                    break
+        for i in range(2):
+            start = ret[i].find('"') + 1
+            end = ret[i].find('"', start)
+            ret[i] = ret[i][start:end]
+        return ret
+            
     
     def getGameInFormat(self):
         self.stdin.write()

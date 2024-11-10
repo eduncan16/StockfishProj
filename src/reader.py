@@ -1,9 +1,9 @@
 from stockfish import Stockfish
-from cmdwrapper import *
+from cmdwrapper import Cmd
 import numpy as np
 
 class reader:
-    def readfile(self, file, outputfile, depth):
+    def readfile(self, file, outputfile, depth, name):
         stockfish = Stockfish(
             path="E:\\python projects\\StockfishEngine\\stockfish-windows-x86-64-avx2.exe",
             depth=depth,
@@ -14,7 +14,15 @@ class reader:
         )
         cmd = Cmd()
         cmd.cd('E:\\python projects\\PGN files')
+        players = (cmd.getNames(file))
         moves = (cmd.pgnExtract(file)).split(" ")
+        white, black = False, False
+        if name in players[0]:
+            white = True
+        elif name in players[1]:
+            black = True
+
+
         ##gets rid of 0-1, 1-0, 1/2-1/2, * at end of pgn
         moves.pop(len(moves)-1)
 

@@ -1,1 +1,0 @@
-np.float32 for 7 decimal of precision

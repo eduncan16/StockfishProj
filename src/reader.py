@@ -32,7 +32,8 @@ class reader:
         stockfish._prepare_for_new_position()
         stockfish.set_fen_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
-        evalList = np.array([], dtype=np.float32)
+        #np.float32 for 7 decimal of precision
+        evalList = np.array([[]])
 
         for i in moves:
             ##spacing and move count
@@ -65,5 +66,5 @@ class reader:
 
             if mcounter%2==0:
                 print("\n")
-
+        cmd.send("exit")
         return evalList

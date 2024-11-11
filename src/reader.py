@@ -8,8 +8,8 @@ class reader:
             path="E:\\python projects\\StockfishEngine\\stockfish-windows-x86-64-avx2.exe",
             depth=depth,
             parameters={
-                "Hash":2048,
-                "Threads":2
+                "Hash":4096,
+                "Threads":4
             }
         )
         cmd = Cmd()

@@ -4,16 +4,21 @@ import os
 import numpy as np
 
 read = reader()
-games = np.empty((1000,200))
+games = np.empty((0, 0))
 pgn_files = os.listdir("E:\\python projects\\PGN files")
+maxRow = 0
 
 for i in pgn_files:
     if i[-4:]==".pgn":
-        game = read.readfile(i, 10, "")
-        if 200-len(game)<0:
-            raise Exception("Game too large")
-        game_padded = np.pad(game, (0, 200-len(game)), mode='constant', constant_values=np.nan)
-        games = np.vstack((games, [game_padded]))
-np.set_printoptions(precision=3)
+        currGame = read.readfile(i, 10, "")
+        if maxRow<currGame.shape[0]:
+            maxRow = currGame.shape[0]
+            #add columns to games to reflect the largest needed column
+            print(maxRow, "|", games.shape[0], "|", games.shape[1])
+            games = np.pad(games, ((0, 0), (0, (maxRow)-games.shape[1])), mode='constant', constant_values=np.nan)
+        #pad the currGame if needed, in order to match the columns in games
+        currGame = np.pad(currGame, (0, maxRow-len(currGame)), mode='constant', constant_values=np.nan)
+        #stack the arrays
+        games = np.vstack((games, [currGame]))
 np.set_printoptions(suppress=True)
 print(games)

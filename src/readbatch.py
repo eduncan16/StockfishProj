@@ -9,6 +9,8 @@ games = np.empty((0, 0))
 pgn_files = os.listdir("E:\\python projects\\PGN files")
 maxRow = 0
 
+savefile = "E:\\python projects\\Raw_data\\Sample_Games.npy"
+
 for i in pgn_files:
     if i[-4:]==".pgn":
         currGame = read.readfile(i, 10, " ")
@@ -20,9 +22,11 @@ for i in pgn_files:
         #pad the currGame if needed, in order to match the columns in games
         currGame = np.pad(currGame, (0, maxRow-len(currGame)), mode='constant', constant_values=np.nan)
         #stack the arrays
+        print(games)
+        print(currGame)
         games = np.vstack((games, [currGame]))
 np.set_printoptions(suppress=True)
 print(games)
 
 #save array to file
-np.save('games.npy', games)
+np.save(savefile, games)

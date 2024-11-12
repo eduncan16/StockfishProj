@@ -2,6 +2,7 @@ from reader import reader
 from cmdwrapper import Cmd
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 
 read = reader()
 games = np.empty((0, 0))
@@ -10,7 +11,7 @@ maxRow = 0
 
 for i in pgn_files:
     if i[-4:]==".pgn":
-        currGame = read.readfile(i, 10, "")
+        currGame = read.readfile(i, 10, " ")
         if maxRow<currGame.shape[0]:
             maxRow = currGame.shape[0]
             #add columns to games to reflect the largest needed column
@@ -22,3 +23,6 @@ for i in pgn_files:
         games = np.vstack((games, [currGame]))
 np.set_printoptions(suppress=True)
 print(games)
+
+#save array to file
+np.save('games.npy', games)

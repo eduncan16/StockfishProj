@@ -8,8 +8,8 @@ class reader:
             path="E:\\python projects\\StockfishEngine\\stockfish-windows-x86-64-avx2.exe",
             depth=depth,
             parameters={
-                "Hash":4096,
-                "Threads":4
+                "Hash":8192,
+                "Threads":3
             }
         )
         cmd = Cmd()
@@ -45,7 +45,8 @@ class reader:
             mcounter+= 1
 
             ##stockfish wrapper is dumb, wont take moves unless formated in this way
-            dum = "\"",i,"\""
+            #dum = "\"",i,"\""
+            dum = i
             stockfish.make_moves_from_current_position(dum)
 
             stockdict = stockfish.get_evaluation()

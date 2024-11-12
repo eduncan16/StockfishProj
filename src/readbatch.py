@@ -23,10 +23,12 @@ for i in pgn_files:
         currGame = np.pad(currGame, (0, maxRow-len(currGame)), mode='constant', constant_values=np.nan)
         #stack the arrays
         games = np.vstack((games, [currGame]))
-np.set_printoptions(suppress=True)
+
+
 #ensure proper formatting
 time.sleep(.1)
-print("\n", games)
+np.set_printoptions(suppress=True, precision=3)
+print("\n", np.nanmean(games, axis=0))
 
 
 #save array to file

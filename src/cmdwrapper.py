@@ -34,11 +34,9 @@ class Cmd(subprocess.Popen):
     def pgnExtract(self, file):
         self.send('pgn-extract -Wuci ' + file)
         while True:
-            line = self.stdout.readline()
-            if len(line) > 2:
-                if line[2] == 'n':
-                    line = self.stdout.readline().strip()
-                    line = self.stdout.readline().strip()
+            line = self.stdout.readline().strip()
+            if(len(line) > 0):
+                if not line[0] == '[':
                     return line
                 
     def getNames(self, file):

@@ -33,7 +33,7 @@ else:
 
 for i in pgn_files:
     if i[-4:]==".pgn":
-        currGame = read.readfile(i, 1, "Alekhine, Alexander")
+        currGame = read.readfile(i, 30, "Alekhine, Alexander")
         if maxRow<currGame.shape[0]:
             maxRow = currGame.shape[0]
             #add columns to games to reflect the largest needed column

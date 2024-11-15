@@ -9,7 +9,7 @@ class reader:
             depth=depth,
             parameters={
                 "Hash":8192,
-                "Threads":3
+                "Threads":1
             }
         )
         cmd = Cmd()
@@ -23,7 +23,7 @@ class reader:
             black = True
 
 
-        ##gets rid of 0-1, 1-0, 1/2-1/2, * at end of pgn
+        ##gets rid of 0-1, 1-0, 1/2-1/2, or * at end of pgn
         moves.pop(len(moves)-1)
 
         mcounter = 2
@@ -45,21 +45,30 @@ class reader:
             mcounter+= 1
 
             ##stockfish wrapper is dumb, wont take moves unless formated in this way
-            #dum = "\"",i,"\""
-            dum = i
+            dum = "\"",i,"\""
             stockfish.make_moves_from_current_position(dum)
 
             stockdict = stockfish.get_evaluation()
             if(stockdict["type"]=="cp"):
                 adv = stockdict["value"]/100
+                if adv>5:
+                    adv = 5.0
+                if adv<-5:
+                    adv = -5.0
                 if black:
                     evalList = np.append(evalList, (adv*-1))
+                    badv = adv*-1
+                    if badv>0:
+                        print("+",badv)
+                    else:
+                        print(badv)
                 else:
                     evalList = np.append(evalList, adv)
-                if adv>0:
-                    print("+",adv)
-                else:
-                    print(adv)
+                    if adv>0:
+                        print("+",adv)
+                    else:
+                        print(adv)
+                
             else:
                 print("Mate in", stockdict["value"])
                 #can replace nan with number later if applicable
